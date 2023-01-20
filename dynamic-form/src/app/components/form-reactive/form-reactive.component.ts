@@ -97,10 +97,8 @@ export class FormReactiveComponent implements OnInit {
     if (this.myForm.valid && this.form.properties) {
       for (const [keyForm, valueForm] of Object.entries(this.myForm.value)) {
         for (const [key, value] of Object.entries(this.form.properties)) {
-          
+
           if (key == keyForm && valueForm) {
-            //console.log('key = '+key,' keyForm = '+keyForm,'valueForm = '+valueForm);
-            console.log('type = '+value.type,' format = '+value.format,'valueForm = '+valueForm);
             if ((value.type == "string" && value.format != "datetime") || value.type == "integer") {
               value.value = valueForm.toString();
               break;
@@ -129,7 +127,6 @@ export class FormReactiveComponent implements OnInit {
           if (this.form.properties) {
             this.createForm(this.form.properties);
           }
-
         },
         error: error => {
           if (error.status == '400') {
