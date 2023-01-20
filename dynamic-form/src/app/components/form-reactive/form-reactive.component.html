@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-md-3 col-sm-0 col-lg-4"></div>
+    <div class="col-md-6 col-sm-12 col-lg-4">
+        <div class="card m-2">
+            <img src="assets/img/logo_wbsgo.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{form.title ? form.title : ''}}</h5>
+                <p class="card-text">{{form.description ? form.description:''}}</p>
+                <p class="card-text"><small>Fields marked with * are required</small></p>
+            </div>
+            <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let input of form?.properties | keyvalue">
+                        <div class="field"
+                            *ngIf="(input.value.type == 'string' && (!input.value.format || input.value.format == 'tel' ) )">
+                            <label [for]="input.key" class="form-label">{{input.value.title}}<a
+                                    *ngIf="verificateRequired(input.key)">*</a></label>
+                            <input autocomplete="off" type="text" class="form-control" [id]="input.key"
+                                [formControlName]="input.key" [pattern]="getPattern(input.value.pattern)">
+                            <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
+                        </div>
+
+                        <div class="field" *ngIf="(input.value.type == 'integer')">
+                            <label [for]="input.key" class="form-label">{{input.value.title}}<a
+                                    *ngIf="verificateRequired(input.key)">*</a></label>
+                            <input autocomplete="off" type="text" class="form-control" [id]="input.key"
+                                [formControlName]="input.key" [pattern]="getPattern(input.value.pattern)"
+                                onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                            <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
+                        </div>
+                        <div class="field" *ngIf="(input.value.type == 'number' && input.value.format == 'float')">
+                            <label [for]="input.key" class="form-label">{{input.value.title}}<a
+                                    *ngIf="verificateRequired(input.key)">*</a></label>
+                            <input autocomplete="off" type="number" class="form-control" [id]="input.key"
+                                [formControlName]="input.key" [pattern]="getPattern(input.value.pattern)">
+                            <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
+                        </div>
+
+                        <div class="field" *ngIf="(input.value.type == 'string' && input.value.format == 'email' )">
+                            <label [for]="input.key" class="form-label">{{input.value.title}}<a
+                                    *ngIf="verificateRequired(input.key)">*</a></label>
+                            <input autocomplete="off" type="email" class="form-control" [id]="input.key"
+                                [formControlName]="input.key" [(ngModel)]="input.value.value"
+                                placeholder="name@example.com" [pattern]="getPattern(input.value.pattern)">
+                            <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
+                        </div>
+                        <div class="field" *ngIf="(input.value.type == 'string' && input.value.format == 'textarea' )">
+                            <label [for]="input.key" class="form-label">{{input.value.title}}<a
+                                    *ngIf="verificateRequired(input.key)">*</a></label>
+                            <textarea autocomplete="off" class="form-control" [id]="input.key"
+                                [formControlName]="input.key" [(ngModel)]="input.value.value"
+                                [pattern]="getPattern(input.value.pattern)"></textarea>
+                            <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
+                        </div>
+                        <div class="form-check form-switch" *ngIf="(input.value.type == 'boolean')">
+                            <input [formControlName]="input.key" class="form-check-input" type="checkbox" role="switch"
+                                [id]="input.key">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">{{input.value.title}}<a
+                                    *ngIf="verificateRequired(input.key)">*</a></label>
+                            <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
+                        </div>
+                        <div class="field"  *ngIf="(input.value.type == 'string' && input.value.format == 'date')">
+                            <label [for]="input.key" class="form-label">{{input.value.title}}<a
+                                    *ngIf="verificateRequired(input.key)">*</a></label>
+                            <input autocomplete="off" type="date" class="form-control" [id]="input.key"
+                                [formControlName]="input.key">
+                        </div>
+                        <div class="field"  *ngIf="(input.value.type == 'string' && input.value.format == 'datetime')">
+                            <label [for]="input.key" class="form-label">{{input.value.title}}<a
+                                    *ngIf="verificateRequired(input.key)">*</a></label>
+                            <input autocomplete="off" type="datetime-local" class="form-control" [id]="input.key"
+                                [formControlName]="input.key">
+                        </div>
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <input type="submit" class="btn btn-primary" value="Send" />
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-0 col-lg-4"></div>
+</div>
+{{form | json}}

@@ -1,0 +1,8 @@
+{
+    "/backend/form": {
+        "target": "http://localhost",
+        "secure": true,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+}
