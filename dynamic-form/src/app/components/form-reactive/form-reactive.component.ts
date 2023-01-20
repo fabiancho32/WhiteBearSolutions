@@ -18,16 +18,17 @@ export class FormReactiveComponent implements OnInit {
   public isResponseButton: boolean = false;
   public showAlertSuccess: boolean = false;
   public showAlertError: boolean = false;
-  public showAlertErrorFatal:boolean = false;
+  public showAlertErrorFatal: boolean = false;
+  public showLoading: boolean = true;
 
   constructor(private formBuilder: FormBuilder,
     private formService: FormsService,
-    private router: Router) { }
+    private router: Router) {
+  }
 
   ngOnInit(): void {
     this.getForm();
   }
-
 
   private getForm() {
     this.formService.getForm(1).subscribe({
@@ -38,7 +39,7 @@ export class FormReactiveComponent implements OnInit {
         }
       },
       error: error => {
-        alert('Lo sentimos ha ocurrido un error intente nuevamente mas tarde...! ' + error.message);
+        this.showAlertErrorFatal = true;
       }
     })
   }
@@ -61,17 +62,25 @@ export class FormReactiveComponent implements OnInit {
         this.formBuilder.control((value.value ? value.value : (value.default ? value.default : null)), validatorsToAdd)
       );
     }
+    this.showLoading = false;
   }
 
+  setForm(controls: properties) {
+    for (const [key, value] of Object.entries(controls)) {
+      if (value.format = "datetime") {
+        (this.myForm.get(key))?.setValue(this.deletedtoISOString((value.value).toString()));
+      } else {
+        (this.myForm.get(key))?.setValue(value.value);
+      }
+    }
+    this.showLoading = false;
+  }
   validateNum(event: number) {
     if (event >= 48 && event <= 57) {
       return true;
     }
     return false;
   }
-
-
-
 
   verificateRequired(key: string) {
     var isRequired = false;
@@ -83,26 +92,62 @@ export class FormReactiveComponent implements OnInit {
     return isRequired;
   }
   onSubmit() {
-    console.log('Form valid: ', this.myForm.valid);
-    console.log('Form values: ', this.myForm.value);
-    console.log('Form values: ', this.myForm.invalid);
+    this.showLoading = true;
 
-    this.formService.sendForm(this.form, 1).subscribe({
-      next: data => {
-        this.showAlertSuccess = true;
-        this.isResponseButton = this.validateResponse(data);
-        console.log(this.validateResponse(data));
-        this.form = data;
-      },
-      error: error => {
-        if (error.status == '400') {
-          this.showAlertError = true;
-          this.form = error.error;
-        }else{
-          this.showAlertErrorFatal = true;
+    if (this.myForm.valid && this.form.properties) {
+      for (const [keyForm, valueForm] of Object.entries(this.myForm.value)) {
+        for (const [key, value] of Object.entries(this.form.properties)) {
+          
+          if (key == keyForm && valueForm) {
+            //console.log('key = '+key,' keyForm = '+keyForm,'valueForm = '+valueForm);
+            console.log('type = '+value.type,' format = '+value.format,'valueForm = '+valueForm);
+            if ((value.type == "string" && value.format != "datetime") || value.type == "integer") {
+              value.value = valueForm.toString();
+              break;
+            } else if (value.type == "string" && value.format == "datetime") {
+              value.value = this.addtoISOString(valueForm.toString());
+              break;
+            } else if (value.type == "number" && value.format == "float") {
+              value.value = parseInt(valueForm.toString(), 10);
+              break;
+            } else if (value.type == "boolean") {
+              if (valueForm.toString().toLowerCase() == 'true') {
+                value.value = true;
+              } else {
+                value.value = false;
+              }
+              break;
+            }
+          }
         }
-      }
-    })
+      };
+      this.formService.sendForm(this.form, 1).subscribe({
+        next: data => {
+          this.showAlertSuccess = true;
+          this.isResponseButton = this.validateResponse(data);
+          this.form = data;
+          if (this.form.properties) {
+            this.createForm(this.form.properties);
+          }
+
+        },
+        error: error => {
+          if (error.status == '400') {
+            this.showAlertError = true;
+            this.form = error.error;
+            if (this.form.properties) {
+              this.setForm(this.form.properties);
+            }
+          } else {
+            this.showAlertErrorFatal = true;
+          }
+          this.showLoading = false;
+        }
+      })
+    } else {
+      this.showAlertError = true;
+      this.showLoading = false;
+    }
   }
   getPattern(pattern: string | null): RegExp {
     var regexPattern: RegExp;
@@ -118,7 +163,6 @@ export class FormReactiveComponent implements OnInit {
   validateResponse(data: form): boolean {
     if (data.properties) {
       for (const [key, value] of Object.entries(data.properties)) {
-
         if (value.type == 'button') {
           return true;
         }
@@ -132,5 +176,10 @@ export class FormReactiveComponent implements OnInit {
     this.router.navigateByUrl((button.value).toString());
   }
 
-
+  addtoISOString(date: string) {
+    return date.concat('Z');
+  }
+  deletedtoISOString(date: string) {
+    return date.replace('Z', '');
+  }
 }

@@ -1,4 +1,9 @@
-<div class="row">
+<div *ngIf="showLoading" class="d-flex justify-content-center m-5">
+    <div class="spinner-border m-5 text-light spinner-long" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<div *ngIf="!showLoading" class="row">
     <div class="col-md-3 col-sm-0 col-lg-4"></div>
     <div class="col-md-6 col-sm-12 col-lg-4">
         <div *ngIf="showAlertSuccess" class="m-2 alert alert-success alert-dismissible fade show" role="alert">
@@ -106,26 +111,18 @@
                         <div class="field" *ngIf="(input.value.type == 'string' && input.value.format == 'date')">
                             <label [for]="input.key" class="form-label">{{input.value.title}}<a
                                     *ngIf="verificateRequired(input.key)">*</a></label>
-                            <input autocomplete="off" type="date" class="form-control" [id]="input.key"
-                                [formControlName]="input.key">
-                            <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
-                            <div *ngIf="input.value.error">
-                                <div
-                                    class="top-margin p-1 text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-3">
-                                    {{input.value.error}}</div>
-                            </div>
+                            <input autocomplete="off" type="date" class="form-control"
+                                [id]="input.key" [formControlName]="input.key">
+                                <p *ngIf="input.value.error">{{input.value.error}}</p>
+                                <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
                         </div>
                         <div class="field" *ngIf="(input.value.type == 'string' && input.value.format == 'datetime')">
                             <label [for]="input.key" class="form-label">{{input.value.title}}<a
                                     *ngIf="verificateRequired(input.key)">*</a></label>
-                            <input autocomplete="off" type="datetime-local" class="form-control" [id]="input.key"
-                                [formControlName]="input.key">
+                            <input autocomplete="off" type="datetime-local" step="1"
+                                class="form-control" [id]="input.key" [formControlName]="input.key">
+                            <p *ngIf="input.value.error">{{input.value.error}}</p>
                             <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
-                            <div *ngIf="input.value.error">
-                                <div
-                                    class="top-margin p-1 text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-3">
-                                    {{input.value.error}}</div>
-                            </div>
                         </div>
                     </li>
                 </ul>
@@ -137,4 +134,3 @@
     </div>
     <div class="col-md-3 col-sm-0 col-lg-4"></div>
 </div>
-{{form | json}}
