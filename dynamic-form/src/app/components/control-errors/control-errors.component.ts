@@ -10,14 +10,13 @@ export class ControlErrorsComponent implements OnInit {
 
   @Input() ctrl?: FormControl | null;
 
-  ERROR_MESSAGE = {
-    required: () => `This field is required`
-  };
-
   constructor() { }
 
-  ngOnInit() { }
 
+  ngOnInit() { }
+  /*
+  * Metodo shouldShowErrors utilizado para validar errores en el formulario
+  */
   shouldShowErrors(): boolean | null {
     if (this.ctrl) {
       return this.ctrl && this.ctrl.errors && this.ctrl.touched;
@@ -25,7 +24,9 @@ export class ControlErrorsComponent implements OnInit {
       return null;
     }
   }
-
+  /*
+  * Metodo listOfErrors utilizado para listar errores del formulario
+  */
   listOfErrors(): string[] {
     if (this.ctrl?.errors) {
       return Object.keys(this.ctrl.errors).map(

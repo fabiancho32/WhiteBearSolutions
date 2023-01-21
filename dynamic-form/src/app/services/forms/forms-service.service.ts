@@ -21,13 +21,16 @@ export class FormsService {
 
   /*
   * Metodo getForm utilizado para obtener un JSON del formulario
-  *  a traves de su ID de tipo number.
+  * a traves de su ID de tipo number.
   */
   getForm(idForm: number) {
     let url_form = this.url + idForm;
     return this.http.get<form>(url_form, { headers: this.headers });
   }
-
+  /*
+  * Metodo sendForm utilizado para enviar un JSON del formulario
+  * a traves de su ID de tipo number.
+  */
   sendForm(persona: form, idForm: number): Observable<form> {
     let url_form = this.url + idForm;
     return this.http.post<form>(url_form, persona);

@@ -7,13 +7,13 @@
     <div class="col-md-3 col-sm-0 col-lg-4"></div>
     <div class="col-md-6 col-sm-12 col-lg-4">
         <div *ngIf="showAlertSuccess" class="m-2 alert alert-success alert-dismissible fade show" role="alert">
-            Ha sido enviado el formulario correctamente.
+            The form has been sent successfully.
         </div>
         <div *ngIf="showAlertError" class="m-2 alert alert-warning alert-dismissible fade show" role="alert">
-            Ha ocurrido un error por favor verifique los datos ingresados.
+            An error has occurred, please check the data entered.
         </div>
         <div *ngIf="showAlertErrorFatal" class="m-2 alert alert-danger alert-dismissible fade show" role="alert">
-            Ha ocurrido un error no esperado por favor intente m&aacute;s tarde.
+            An unexpected error has occurred, please try again later.
         </div>
         <div class="card m-2">
             <img src="assets/img/logo_wbsgo.png" class="card-img-top" alt="...">
@@ -43,7 +43,6 @@
                             </div>
                             <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
                         </div>
-
                         <div class="field" *ngIf="(input.value.type == 'integer')">
                             <label [for]="input.key" class="form-label">{{input.value.title}}<a
                                     *ngIf="verificateRequired(input.key)">*</a></label>
@@ -57,10 +56,11 @@
                                     {{input.value.error}}</div>
                             </div>
                         </div>
-                        <div class="field" *ngIf="(input.value.type == 'number' && input.value.format == 'float')">
+
+                        <div class="field" *ngIf="(input.value.type == 'number')">
                             <label [for]="input.key" class="form-label">{{input.value.title}}<a
                                     *ngIf="verificateRequired(input.key)">*</a></label>
-                            <input autocomplete="off" type="number" class="form-control" [id]="input.key"
+                            <input autocomplete="off" step="0.01" type="number" class="form-control" [id]="input.key"
                                 [formControlName]="input.key" [pattern]="getPattern(input.value.pattern)">
                             <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
                             <div *ngIf="input.value.error">
@@ -111,16 +111,16 @@
                         <div class="field" *ngIf="(input.value.type == 'string' && input.value.format == 'date')">
                             <label [for]="input.key" class="form-label">{{input.value.title}}<a
                                     *ngIf="verificateRequired(input.key)">*</a></label>
-                            <input autocomplete="off" type="date" class="form-control"
-                                [id]="input.key" [formControlName]="input.key">
-                                <p *ngIf="input.value.error">{{input.value.error}}</p>
-                                <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
+                            <input autocomplete="off" type="date" class="form-control" [id]="input.key"
+                                [formControlName]="input.key">
+                            <p *ngIf="input.value.error">{{input.value.error}}</p>
+                            <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
                         </div>
                         <div class="field" *ngIf="(input.value.type == 'string' && input.value.format == 'datetime')">
                             <label [for]="input.key" class="form-label">{{input.value.title}}<a
                                     *ngIf="verificateRequired(input.key)">*</a></label>
-                            <input autocomplete="off" type="datetime-local" step="1"
-                                class="form-control" [id]="input.key" [formControlName]="input.key">
+                            <input autocomplete="off" type="datetime-local" step="1" class="form-control"
+                                [id]="input.key" [formControlName]="input.key">
                             <p *ngIf="input.value.error">{{input.value.error}}</p>
                             <app-control-errors [ctrl]="$any(myForm).get(input.key)"></app-control-errors>
                         </div>
