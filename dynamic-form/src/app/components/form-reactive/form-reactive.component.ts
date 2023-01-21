@@ -3,7 +3,7 @@ import { FormsService } from './../../services/forms/forms-service.service';
 import { form } from 'src/app/models/form-model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-form-reactive',
@@ -19,11 +19,10 @@ export class FormReactiveComponent implements OnInit {
   public showAlertError: boolean = false;
   public showAlertErrorFatal: boolean = false;
   public showLoading: boolean = true;
-  public numberForm: number = 3;
+  public numberForm: number = 1;
 
   constructor(private formBuilder: FormBuilder,
-    private formService: FormsService,
-    private router: Router) {
+    private formService: FormsService) {
   }
 
   ngOnInit(): void {
@@ -33,8 +32,8 @@ export class FormReactiveComponent implements OnInit {
   /*
   * Metodo getForm utilizado obtener el formulario desde una peticion tipo GET
   */
-  private getForm() {
-    this.formService.getForm(this.numberForm).subscribe({
+  getForm() {
+    this.formService.getFormService(this.numberForm).subscribe({
       next: data => {
         this.form = data;
         if (this.form.properties) {
@@ -201,7 +200,7 @@ export class FormReactiveComponent implements OnInit {
   * Metodo addtoISOString utilizado para agregar formato tipo ISO al datetime
   */
   addtoISOString(date: string) {
-    return date.concat('Z');
+    return  this.deletedtoISOString(date).concat('Z');
   }
   
   /*

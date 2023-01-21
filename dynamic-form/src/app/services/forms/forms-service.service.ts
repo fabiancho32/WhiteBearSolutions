@@ -23,7 +23,7 @@ export class FormsService {
   * Metodo getForm utilizado para obtener un JSON del formulario
   * a traves de su ID de tipo number.
   */
-  getForm(idForm: number) {
+  getFormService(idForm: number) {
     let url_form = this.url + idForm;
     return this.http.get<form>(url_form, { headers: this.headers });
   }
