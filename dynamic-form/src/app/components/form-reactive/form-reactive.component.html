@@ -4,8 +4,8 @@
     </div>
 </div>
 <div *ngIf="!showLoading" class="row">
-    <div class="col-md-3 col-sm-0 col-lg-4"></div>
-    <div class="col-md-6 col-sm-12 col-lg-4">
+    <div class="col-md-2 col-sm-0 col-lg-3"></div>
+    <div class="col-md-8 col-sm-12 col-lg-6">
         <div *ngIf="showAlertSuccess" class="m-2 alert alert-success alert-dismissible fade show" role="alert">
             The form has been sent successfully.
         </div>
@@ -15,7 +15,7 @@
         <div *ngIf="showAlertErrorFatal" class="m-2 alert alert-danger alert-dismissible fade show" role="alert">
             An unexpected error has occurred, please try again later.
         </div>
-        <div class="card m-2">
+        <div class="card m-5">
             <img src="assets/img/logo_wbsgo.png" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">{{form.title ? form.title : ''}}</h5>
@@ -132,5 +132,5 @@
             </form>
         </div>
     </div>
-    <div class="col-md-3 col-sm-0 col-lg-4"></div>
+    <div class="col-md-2 col-sm-0 col-lg-3"></div>
 </div>
